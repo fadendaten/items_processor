@@ -88,24 +88,23 @@ module ItemsProcessor
     end
     
     private
-      def percental_diff(q, diff)
-        q = q.to_f
-        diff = diff.abs.to_f
-        (100/q*diff).round 1
-      end
-    
-      def tolerated?(diff)
-        diff < tol
-      end
+    def percental_diff(q, diff)
+      q = q.to_f
+      diff = diff.abs.to_f
+      (100/q*diff).round 1
+    end
+  
+    def tolerated?(diff)
+      diff < tol
+    end
   end
-  
-  # ==== Terminals ====
-  
-  def self.merge(receipts)
-    Merge.new(receipts).evaluate
-  end
-  
-  def self.sub(minuend, subtrahend, options={})
-    Sub.new(minuend, subtrahend, options).evaluate
+
+  Kernel.module_eval do
+    def ip_merge(receipts)
+      Merge.new(receipts).evaluate
+    end
+    def ip_sub(minuend, subtrahend, options={})
+      Sub.new(minuend, subtrahend, options).evaluate
+    end
   end
 end
