@@ -22,14 +22,14 @@
 require "items_processor/version"
 
 module ItemsProcessor
-  
+
   class Merge
     attr_reader :receipts
-    
+
     def initialize(receipts)
       @receipts = receipts
     end
-    
+
     def evaluate
       init = {}
       receipts.uniq.each do |r|
@@ -37,7 +37,7 @@ module ItemsProcessor
       end
       init
     end
-    
+
     private
       def merge_items(init, items)
         items.each do |a_id, hash|
@@ -50,10 +50,10 @@ module ItemsProcessor
         init
       end
   end
-  
+
   class Sub
     attr_reader :inv, :min, :sub, :tol
-    
+
     def initialize(minuend, subtrahend, options={})
       if options[:inversed]
         @inv = true
@@ -65,7 +65,7 @@ module ItemsProcessor
       end
       @tol = options[:tolerance]
     end
-    
+
     def evaluate
       diff = min.clone
       sub.each do |a_id, hash|
@@ -86,14 +86,14 @@ module ItemsProcessor
       end
       diff
     end
-    
+
     private
     def percental_diff(q, diff)
       q = q.to_f
       diff = diff.abs.to_f
       (100/q*diff).round 1
     end
-  
+
     def tolerated?(diff)
       diff < tol
     end
