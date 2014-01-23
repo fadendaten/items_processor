@@ -1,4 +1,4 @@
-# Copyright (c) 2012 Rathesan Iyadurai
+# Copyright (c) 2014 fadendaten gmbh
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -32,7 +32,7 @@ module ItemsProcessor
 
     def evaluate
       init = {}
-      receipts.uniq.each do |r|
+      receipts.each do |r|
         merge_items init, r.line_items_to_hash
       end
       init

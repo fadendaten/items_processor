@@ -2,10 +2,10 @@
 require File.expand_path('../lib/items_processor/version', __FILE__)
 
 Gem::Specification.new do |gem|
-  gem.authors       = ["Rathesan Iyadurai", "Felix Langenegger", 
+  gem.authors       = ["Rathesan Iyadurai", "Felix Langenegger",
                        "Simon Kiener", "Christoph Wiedmer"]
   gem.email         = ["support@fadendaten.ch"]
-  gem.description   = "This Library contains a basic Lineitems processing 
+  gem.description   = "This Library contains a basic Lineitems processing
                        interpreter used by all kinds of receipts."
   gem.summary       = "Lineitems processing library."
   gem.homepage      = ""
@@ -16,6 +16,6 @@ Gem::Specification.new do |gem|
   gem.name          = "items_processor"
   gem.require_paths = ["lib"]
   gem.version       = ItemsProcessor::VERSION
-  
-  gem.add_development_dependency "rspec", "~> 2.11.0"
+
+  gem.add_development_dependency "rspec", "~> 2.14.1"
 end
