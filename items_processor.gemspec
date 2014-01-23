@@ -17,4 +17,7 @@ Gem::Specification.new do |gem|
   gem.version       = ItemsProcessor::VERSION
 
   gem.add_development_dependency "rspec", "~> 2.14.1"
+  gem.add_development_dependency "yard", "~> 0.8.7.3"
+  # For markdown formatting of yard doc
+  gem.add_development_dependency "redcarpet", "~> 3.0.0"
 end

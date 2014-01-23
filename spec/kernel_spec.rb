@@ -19,7 +19,7 @@ describe Kernel do
   let(:receipt2) do
     double("receipt2", :line_items_to_hash => {
       1 => {
-        :quantity       => 12,
+        :quantity       => 1,
         :price_value    => 4,
         :price_currency => "USD"
       },
@@ -39,7 +39,7 @@ describe Kernel do
   describe "#ip_merge" do
     it "should merge quantities for common articles" do
       merged_hash = ip_merge receipt1, receipt2
-      merged_hash[1][:quantity].should == 24
+      merged_hash[1][:quantity].should == 13
       merged_hash[2][:quantity].should == 16
       merged_hash[3][:quantity].should == 3
     end
@@ -59,20 +59,49 @@ describe Kernel do
         receipt1.line_items_to_hash,
         receipt2.line_items_to_hash
       )
-      diff_hash[1][:quantity].should == 0
+      diff_hash[1][:quantity].should == 11
       diff_hash[2][:quantity].should == 0
       diff_hash[3][:quantity].should == -3
 
       diff_hash[1][:price_value].should == 6
       diff_hash[2][:price_value].should == 0
-      diff_hash[3][:price_value].should == 9
+      diff_hash[3][:price_value].should == -9
     end
 
     it "should be deterministic" do
       receipt1_hash = receipt1.line_items_to_hash
       receipt2_hash = receipt2.line_items_to_hash
-      ip_sub(receipt1_hash, receipt2_hash)[1][:quantity].should == 0
-      ip_sub(receipt1_hash, receipt2_hash)[1][:quantity].should == 0
+      ip_sub(receipt1_hash, receipt2_hash)[1][:quantity].should == 11
+      ip_sub(receipt1_hash, receipt2_hash)[1][:quantity].should == 11
+    end
+
+    context "when a :tolerance option is given" do
+      it "should nest a { :tolerated => true|false } hash for each article whereas the value
+          indicates if the percental diff is less than the given :tolerance value" do
+        tolerance = 5 # percent
+        diff_hash = ip_sub(
+          receipt1.line_items_to_hash,
+          receipt2.line_items_to_hash,
+          :tolerance => tolerance
+        )
+        diff_hash[1][:tolerated].should == false
+        diff_hash[2][:tolerated].should == true
+      end
+    end
+
+    context "when :inversed option is set to true" do
+      it "should return inverted diff quantities and prices" do
+        diff_hash = ip_sub(
+          receipt1.line_items_to_hash,
+          receipt2.line_items_to_hash,
+          :inversed => true
+        )
+        diff_hash[1][:quantity].should == -11
+        diff_hash[2][:quantity].should == 0
+
+        diff_hash[1][:price_value].should == -6
+        diff_hash[2][:price_value].should == 0
+      end
     end
   end
 end
