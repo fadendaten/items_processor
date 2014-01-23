@@ -100,7 +100,10 @@ module ItemsProcessor
   end
 
   Kernel.module_eval do
-    def ip_merge(receipts)
+    def ip_merge(*receipts)
+      if receipts.first.is_a? Array
+        receipts = receipts.first
+      end
       Merge.new(receipts).evaluate
     end
     def ip_sub(minuend, subtrahend, options={})

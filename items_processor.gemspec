@@ -2,8 +2,7 @@
 require File.expand_path('../lib/items_processor/version', __FILE__)
 
 Gem::Specification.new do |gem|
-  gem.authors       = ["Rathesan Iyadurai", "Felix Langenegger",
-                       "Simon Kiener", "Christoph Wiedmer"]
+  gem.authors       = ["fadendaten gmbh"]
   gem.email         = ["support@fadendaten.ch"]
   gem.description   = "This Library contains a basic Lineitems processing
                        interpreter used by all kinds of receipts."
