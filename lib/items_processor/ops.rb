@@ -31,14 +31,9 @@ module ItemsProcessor
     attr_reader :inv, :min, :sub, :tol
 
     def initialize(minuend, subtrahend, options = {})
-      if options[:inversed]
-        @inv = true
-        @min = subtrahend
-        @sub = minuend
-      else
-        @min = minuend
-        @sub = subtrahend
-      end
+      @inv = options.fetch(:inversed, false)
+      @min = minuend
+      @sub = subtrahend
       @tol = options[:tolerance]
     end
 
@@ -61,14 +56,14 @@ module ItemsProcessor
           end
         end
         if tol
-          init_q = if inv
-            hash[:quantity]
-          else
-            min.fetch(a_id, { :quantity => 1 })[:quantity]
-          end
+          init_q = min.fetch(a_id, { :quantity => 1 })[:quantity]
           p_diff = percental_diff(init_q, diff[a_id][:quantity])
           diff[a_id][:p_diff] = p_diff
           diff[a_id][:tolerated] = tolerated?(p_diff)
+        end
+        if inv
+          diff[a_id][:quantity] *= -1
+          diff[a_id][:price_value] *= -1 if diff[a_id][:price_value]
         end
       end
       diff

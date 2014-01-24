@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Kernel do
+describe Object do
   let(:receipt1) do
     double("receipt1", :line_items_to_hash => {
       1 => {
@@ -98,9 +98,11 @@ describe Kernel do
         )
         diff_hash[1][:quantity].should == -11
         diff_hash[2][:quantity].should == 0
+        diff_hash[3][:quantity].should == 3
 
         diff_hash[1][:price_value].should == -6
         diff_hash[2][:price_value].should == 0
+        diff_hash[3][:price_value].should == 9
       end
     end
   end
