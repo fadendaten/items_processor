@@ -12,8 +12,6 @@ module ItemsProcessor
     # @param [Array] receipts the list of receipts. It is expected that they
     #   implement #line_items_to_hash, an instance method that returns all
     #   occuring articles in a hash mapped to their quantities.
-    #   It does not matter if the receipts are in an Array
-    #   or if they are passed in as multiple arguments.
     #
     # @return [Hash] the merged quantities in the following form:
     #   { <article_id1> => { :quantitiy => <merged_quantities> },
@@ -26,14 +24,11 @@ module ItemsProcessor
     #   receipt2.line_items_to_hash
     #   # => { 1 => { :quantity => 2 }, 7 => { :quantity => 6 } }
     #
-    #   ip_merge receipt1, receipt2 # same as ip_merge([receipt1, receipt2])
+    #   ip_merge [receipt1, receipt2]
     #   # => { 1 => { :quantity => 5 },
     #          4 => { :quantity => 2 },
     #          7 => { :quantity => 6 } }
-    def ip_merge(*receipts)
-      if receipts.first.is_a? Array
-        receipts = receipts.first
-      end
+    def ip_merge(receipts)
       Merge.new(receipts).evaluate
     end
 

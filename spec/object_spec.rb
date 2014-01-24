@@ -37,19 +37,20 @@ describe Object do
   end
 
   describe "#ip_merge" do
+    let(:all_receipts) { [receipt1, receipt2] }
     it "should merge quantities for common articles" do
-      merged_hash = ip_merge receipt1, receipt2
+      merged_hash = ip_merge all_receipts
       merged_hash[1][:quantity].should == 13
       merged_hash[2][:quantity].should == 16
       merged_hash[3][:quantity].should == 3
     end
 
     it "should be deterministic" do
-      ip_merge(receipt1, receipt2).should == ip_merge(receipt1, receipt2)
+      ip_merge(all_receipts).should == ip_merge(all_receipts)
     end
 
     it "should be symmetric" do
-      ip_merge(receipt1, receipt2).should == ip_merge(receipt2, receipt1)
+      ip_merge(all_receipts).should == ip_merge(all_receipts)
     end
   end
 
