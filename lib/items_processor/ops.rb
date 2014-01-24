@@ -39,39 +39,41 @@ module ItemsProcessor
 
     def evaluate
       diff = {}
-      sub.each do |a_id, hash|
-        if min[a_id]
-          diff[a_id] = { :quantity => min[a_id][:quantity] - hash[:quantity] }
-          if hash[:price_value]
-            diff[a_id][:price_value] = if min[a_id][:price_value]
-              min[a_id][:price_value] - hash[:price_value]
-            else
-              hash[:price_value] * -1
-            end
-          end
-        else
-          diff[a_id] = { :quantity => hash[:quantity] * -1 }
-          if hash[:price_value]
-            diff[a_id][:price_value] = hash[:price_value] * -1
-          end
+      articles_ids = min.keys | sub.keys
+
+      articles_ids.each do |a_id|
+        min_quantity = min.fetch(a_id, { :quantity => 0 })[:quantity]
+        sub_quantity = sub.fetch(a_id, { :quantity => 0 })[:quantity]
+
+        diff[a_id] = { :quantity => min_quantity - sub_quantity }
+        diff[a_id][:quantity] *= -1 if inv
+
+        if price_info_exists?(min[a_id], sub[a_id])
+          min_price = min.fetch(a_id, { :price_value => 0.0 })[:price_value]
+          sub_price = sub.fetch(a_id, { :price_value => 0.0 })[:price_value]
+
+          diff[a_id][:price_value] = min_price - sub_price
+          diff[a_id][:price_value] *= -1 if inv
         end
+
         if tol
-          init_q = min.fetch(a_id, { :quantity => 1 })[:quantity]
-          p_diff = percental_diff(init_q, diff[a_id][:quantity])
+          p_diff = percental_diff(min_quantity, diff[a_id][:quantity])
           diff[a_id][:p_diff] = p_diff
           diff[a_id][:tolerated] = tolerated?(p_diff)
         end
-        if inv
-          diff[a_id][:quantity] *= -1
-          diff[a_id][:price_value] *= -1 if diff[a_id][:price_value]
-        end
       end
+
       diff
     end
 
     private
 
+    def price_info_exists?(h1, h2)
+      (h1 && h1[:price_value]) || (h2 && h2[:price_value])
+    end
+
     def percental_diff(q, diff)
+      q    = 1 if q.zero?
       q    = q.to_f
       diff = diff.abs.to_f
       (100/q*diff).round 1

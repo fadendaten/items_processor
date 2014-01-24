@@ -106,5 +106,31 @@ describe Object do
         diff_hash[3][:price_value].should == 9
       end
     end
+
+    context "when minuend and subtrahend both have articles that the other
+             one does not" do
+      let(:minuend) do
+        {
+          1 => { :quantity => 2 },
+          2 => { :quantity => 3 }
+        }
+      end
+
+      let(:subtrahend) do
+        {
+          1 => { :quantity => 2 },
+          3 => { :quantity => 5 }
+        }
+      end
+
+      it "should return a diff that contains all article ids" do
+        diff_hash = ip_sub minuend, subtrahend
+        diff_hash.keys.should include 1, 2, 3
+
+        diff_hash[1][:quantity].should == 0
+        diff_hash[2][:quantity].should == 3
+        diff_hash[3][:quantity].should == -5
+      end
+    end
   end
 end
