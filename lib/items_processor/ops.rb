@@ -1,4 +1,10 @@
 module ItemsProcessor
+  class ::Hash
+    def line_items_to_hash
+      self
+    end
+  end
+
   class Merge
     attr_reader :receipts, :merged
 
@@ -32,8 +38,8 @@ module ItemsProcessor
 
     def initialize(minuend, subtrahend, options = {})
       @inv = options.fetch(:inversed, false)
-      @min = minuend
-      @sub = subtrahend
+      @min = minuend.line_items_to_hash
+      @sub = subtrahend.line_items_to_hash
       @tol = options[:tolerance]
     end
 
@@ -77,7 +83,7 @@ module ItemsProcessor
       q    = 1 if q.zero?
       q    = q.to_f
       diff = diff.abs.to_f
-      (100/q*diff).round 1
+      (100 / q * diff).round 1
     end
 
     def tolerated?(diff)

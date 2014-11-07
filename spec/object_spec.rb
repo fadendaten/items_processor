@@ -51,6 +51,15 @@ describe Object do
   end
 
   describe "#ip_sub" do
+    it "does not care whether the arguments are hashes or receipts" do
+      [
+        ip_sub(receipt1, receipt2),
+        ip_sub(receipt1.line_items_to_hash, receipt2),
+        ip_sub(receipt1, receipt2.line_items_to_hash),
+        ip_sub(receipt1.line_items_to_hash, receipt2.line_items_to_hash)
+      ].uniq.count.should == 1
+    end
+
     it "should substract quantities and prices for common articles" do
       diff_hash = ip_sub(
         receipt1.line_items_to_hash,
