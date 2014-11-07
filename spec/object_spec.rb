@@ -128,5 +128,21 @@ describe Object do
         diff_hash[3][:quantity].should == -5
       end
     end
+
+    context "when only one hash has price keys" do
+      let(:minuend) do
+        { 1 => { :quantity => 5, :price_value => 5 } }
+      end
+
+      let(:subtrahend) do
+        { 1 => { :quantity => 2 } }
+      end
+
+      it "should ignore the price keys altogether" do
+        diff_hash = ip_sub minuend, subtrahend
+        diff_hash[1][:price_value].should be_nil
+        diff_hash[1][:quantity].should == 3
+      end
+    end
   end
 end

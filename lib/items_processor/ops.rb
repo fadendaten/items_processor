@@ -51,9 +51,10 @@ module ItemsProcessor
         if price_info_exists?(min[a_id], sub[a_id])
           min_price = min.fetch(a_id, { :price_value => 0.0 })[:price_value]
           sub_price = sub.fetch(a_id, { :price_value => 0.0 })[:price_value]
-
-          diff[a_id][:price_value] = min_price - sub_price
-          diff[a_id][:price_value] *= -1 if inv
+          if min_price && sub_price
+            diff[a_id][:price_value] = min_price - sub_price
+            diff[a_id][:price_value] *= -1 if inv
+          end
         end
 
         if tol
