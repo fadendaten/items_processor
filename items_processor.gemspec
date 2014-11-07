@@ -16,8 +16,8 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = ItemsProcessor::VERSION
 
-  gem.add_development_dependency "rspec", "~> 2.14.1"
-  gem.add_development_dependency "yard", "~> 0.8.7.3"
+  gem.add_development_dependency "rspec", "~> 3.1.0"
+  gem.add_development_dependency "yard", "~> 0.8.7.6"
   # For markdown formatting of yard doc
-  gem.add_development_dependency "redcarpet", "~> 3.0.0"
+  gem.add_development_dependency "redcarpet", "~> 3.2.0"
 end

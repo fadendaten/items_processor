@@ -48,10 +48,6 @@ describe Object do
     it "should be deterministic" do
       ip_merge(all_receipts).should == ip_merge(all_receipts)
     end
-
-    it "should be symmetric" do
-      ip_merge(all_receipts).should == ip_merge(all_receipts)
-    end
   end
 
   describe "#ip_sub" do

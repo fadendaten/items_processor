@@ -7,7 +7,6 @@ require 'items_processor'
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
-  config.treat_symbols_as_metadata_keys_with_true_values = true
   config.run_all_when_everything_filtered = true
   config.filter_run :focus
 
@@ -16,4 +15,12 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = 'random'
+
+  # Should for the win
+  config.expect_with :rspec do |c|
+    c.syntax = :should
+  end
+  config.mock_with :rspec do |c|
+    c.syntax = :should
+  end
 end
