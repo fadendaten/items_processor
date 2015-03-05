@@ -39,6 +39,8 @@ module ItemsProcessor
     #   differences have to be inversed
     # @option options [Float] :tolerance Percental value that indicates when
     #   quantity difference is no longer tolerated
+    # @option options [Fixnum] :round Which value to round the price_value
+    #   entries to.
     def ip_sub(minuend, subtrahend, options = {})
       Sub.new(minuend, subtrahend, options).evaluate
     end

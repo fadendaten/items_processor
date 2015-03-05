@@ -34,13 +34,14 @@ module ItemsProcessor
   end
 
   class Sub
-    attr_reader :inv, :min, :sub, :tol
+    attr_reader :inv, :min, :sub, :tol, :round_value
 
     def initialize(minuend, subtrahend, options = {})
       @inv = options.fetch(:inversed, false)
       @min = minuend.line_items_to_hash
       @sub = subtrahend.line_items_to_hash
       @tol = options[:tolerance]
+      @round_value = options[:round]
     end
 
     def evaluate
@@ -58,6 +59,10 @@ module ItemsProcessor
           min_price = min.fetch(a_id, { :price_value => 0.0 })[:price_value]
           sub_price = sub.fetch(a_id, { :price_value => 0.0 })[:price_value]
           if min_price && sub_price
+            if round?
+              min_price = min_price.round round_value
+              sub_price = sub_price.round round_value
+            end
             diff[a_id][:price_value] = min_price - sub_price
             diff[a_id][:price_value] *= -1 if inv
           end
@@ -88,6 +93,10 @@ module ItemsProcessor
 
     def tolerated?(diff)
       diff < tol
+    end
+
+    def round?
+      !!round_value
     end
   end
 end

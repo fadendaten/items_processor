@@ -112,6 +112,23 @@ describe Object do
       end
     end
 
+    context "when :round option is passed" do
+      let(:minuend) do
+        { 1 => { :quantity => 2, :price_value => 15.1234 } }
+      end
+
+      let(:subtrahend) do
+        { 1 => { :quantity => 1, :price_value => 15.12 } }
+      end
+
+      it "should round all price values before calculating the difference" do
+        diff_hash = ip_sub minuend, subtrahend, :round => 2
+
+        diff_hash[1][:quantity].should == 1
+        diff_hash[1][:price_value].should == 0
+      end
+    end
+
     context "when minuend and subtrahend both have articles that the other
              one does not" do
       let(:minuend) do
